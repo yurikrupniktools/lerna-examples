@@ -215,30 +215,36 @@ jobs:
           command: git config --global user.email $git_EMAIL /
             && git config --global user.name $git_name
       - run:
-          name: publish to npm
-          command: npx lerna publish major --yes --no-push --conventional-commits
-      - run:
-          name: update package-lock.json after publish
-          command: npx lerna exec -- npm install --package-lock-only --ignore-scripts --no-audit
-      - run:
-          name: git add
-          command: git add .
-      - run:
-          name: git commit
-          command: git commit -m "package-lock.json update"
-      - run:
           name: git whoami
           command: whoami
       - run:
-          name: tag by npm
-          command: npm version patch
-      - save_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
-          paths:
-            - ./node_modules
-      - run:
-          name: git push
-          command: git push origin --follow-tags
+          name: lerna changed
+          command: npx lerna changed
+#      - run:
+#          name: publish to npm
+#          command: npx lerna publish major --yes --no-push --conventional-commits
+#      - run:
+#          name: update package-lock.json after publish
+#          command: npx lerna exec -- npm install --package-lock-only --ignore-scripts --no-audit
+#      - run:
+#          name: git add
+#          command: git add .
+#      - run:
+#          name: git commit
+#          command: git commit -m "package-lock.json update"
+#      - run:
+#          name: git whoami
+#          command: whoami
+#      - run:
+#          name: tag by npm
+#          command: npm version patch
+#      - save_cache:
+#          key: dependency-cache-{{ checksum "package.json" }}
+#          paths:
+#            - ./node_modules
+#      - run:
+#          name: git push
+#          command: git push origin --follow-tags
 
   lint_test_build:
     <<: *defaults
