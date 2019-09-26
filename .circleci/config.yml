@@ -298,21 +298,21 @@ workflows:
   build:
     jobs:
       - lint_test_build
-#      - deploys:
-#          requires:
-#            - build
-#          filters:
-#            branches:
-#              only: master
+      - deploys:
+          requires:
+            - lint_test_build
+          filters:
+            branches:
+              only: master
       - coverage:
           filters:
             branches:
               only: master
 
-#      - dc-e2e-all: // until deploy resolved
-#          filters:
-#            branches:
-#              only: master
+      - dc-e2e-all:
+          filters:
+            branches:
+              only: master
 
 #          requires:
 #            - build
