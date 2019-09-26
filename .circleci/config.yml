@@ -30,51 +30,6 @@ only-deploy-tags-with-v: &only-deploy-tags-with-v
 
 
 jobs:
-  checkout:
-    <<: *defaults
-    steps:
-      - checkout
-      - attach_workspace:
-          at: ~/area
-      - run:
-          name: update-npm
-          command: sudo npm install -g npm@6
-      - restore_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
-      - run:
-          name: install-npm-wee
-          command: npm install
-      - save_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
-          paths:
-            - ./node_modules
-      - run:
-          name: install-packages
-          command: npm run pi
-      - persist_to_workspace:
-          root: ~/area
-          paths:
-            .
-  lint:
-    <<: *defaults
-    steps:
-      - attach_workspace:
-          at: ~/area
-      - run:
-          name: ls
-          command: ls -a
-      - run:
-          name: eslint
-          command: npm run lint
-  test:
-    <<: *defaults
-    steps:
-      - attach_workspace:
-          at: ~/area
-      - run:
-          name: test
-          command: npm run test
-
   coverage:
     <<: *defaults
     steps:
@@ -106,26 +61,6 @@ jobs:
               -t ${CODECOV_TOKEN} \
               -y .codecov.yml \
 
-  deploys:
-    <<: *defaults
-    steps:
-      - attach_workspace:
-          at: ~/area
-      - run:
-          name: ls -a
-          command: ls -a
-      - run:
-          name: ls packages/webservers/webserver2
-          command: ls packages/webservers/webserver2
-      - run:
-          name: ls packages/webservers/webserver2
-          command: ls packages/webservers/webserver2/dist
-      - run:
-          name: ls packages/webservers/webserver1
-          command: ls packages/webservers/webserver1/dist
-#      - run:
-#          name: lerna changed
-#          command: npx lerna changed
 
   dc-push-all:
     <<: *docker
@@ -250,25 +185,38 @@ jobs:
   deploy_npm:
     <<: *defaults
     steps:
-      - attach_workspace:
-          at: ~/area
-#      - checkout
+      - checkout
       - add_ssh_keys:
           fingerprints:
             - "SO:ME:FIN:G:ER:PR:IN:T"
       - run:
-          name: install
+          name: update-npm
+          command: sudo npm install -g npm@6
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: install-npm-wee
+          command: npm install
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
+      - run:
+          name: install sub packages
+          command: npm run pi
+      - run:
+          name: build sub packages
           command: npm run build
       - run:
           name: Authenticate with registry
           command: echo "//registry.npmjs.org/:_authToken=$npm_TOKEN" > ~/.npmrc
       - run:
           name: config email
-          command: git config --global user.email "krupnik.yuri@gmail.com" /
-            && git config --global user.name "yurikrupnik"
+          command: git config --global user.email $git_EMAIL /
+            && git config --global user.name $git_name
       - run:
-          name: publish
-          command: npx lerna publish patch --yes --no-push
+          name: publish to npm
+          command: npx lerna publish major --yes --no-push --conventional-commits
       - run:
           name: update package-lock.json after publish
           command: npx lerna exec -- npm install --package-lock-only --ignore-scripts --no-audit
