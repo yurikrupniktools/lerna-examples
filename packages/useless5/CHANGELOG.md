@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0](https://github.com/yurikrupniktools/lerna-examples/compare/@krupnik/useless5@4.0.0...@krupnik/useless5@5.0.0) (2019-09-26)
+
+**Note:** Version bump only for package @krupnik/useless5
+
+
+
+
+
 # [4.0.0](https://github.com/yurikrupniktools/lerna-examples/compare/@krupnik/useless5@3.0.0...@krupnik/useless5@4.0.0) (2019-09-26)
 
 **Note:** Version bump only for package @krupnik/useless5
