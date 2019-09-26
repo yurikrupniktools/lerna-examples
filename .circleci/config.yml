@@ -133,12 +133,9 @@ jobs:
       - run:
           name: push gateway1
           command: docker push yurikrupnik/client-apps_gateway1
-
-  dc-e2e-all:
+  dc-e2e-all1:
     <<: *docker
     steps:
-#      - attach_workspace:
-#          at: ~/docker
       - checkout
       - run:
           name: docker login
@@ -146,10 +143,6 @@ jobs:
       - run:
           name: delete images
           command: docker images
-#            docker images \
-#      - run:
-#          name: delete rmi
-#          command: docker rmi $(docker images -q) -f
       - run:
           name: build images
           command: docker-compose build --force-rm
@@ -162,19 +155,43 @@ jobs:
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
             - ./node_modules
-
       - run:
           name: docker images
           command: docker images
+  dc-e2e-all:
+    <<: *docker
+    steps:
+      - checkout
       - run:
-          name: docker-compose up
-          command: docker-compose up -d
+          name: docker login
+          command: docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASS
       - run:
-          name: e2e
-          command: npm run e2e
+          name: delete images
+          command: docker images
       - run:
-          name: docker-compose down
-          command: docker-compose down
+          name: build images
+          command: docker-compose build --force-rm
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: install packages
+          command: npm i && npm run pi
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
+      - run:
+          name: docker images
+          command: docker images
+#      - run:
+#          name: docker-compose up
+#          command: docker-compose up -d
+#      - run:
+#          name: e2e
+#          command: npm run e2e
+#      - run:
+#          name: docker-compose down
+#          command: docker-compose down
 #      - run:
 #          name: delete images
 #          command: docker rmi $(docker images -q) -f
@@ -302,15 +319,7 @@ workflows:
 
   deploy-with-tags:
     jobs:
-      - checkout:
-          <<: *only-deploy-tags-with-v
-      - dc-build-all:
-          <<: *only-deploy-tags-with-v
-          requires:
-            - checkout
       - dc-e2e-all:
           <<: *only-deploy-tags-with-v
-          requires:
-            - checkout
-      - checkout:
+      - dc-e2e-all1:
           <<: *only-deploy-tags
