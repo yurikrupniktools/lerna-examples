@@ -15,13 +15,13 @@ ENV DESTINATION_HOST=http://gateway1
 #RUN echo ${PORT}
 #RUN echo ${HOST}
 
-COPY . ./packages/webservers/webserver1
+COPY . ./packages/app
 RUN npm run pi
-RUN npx lerna run build --scope @krupnik/fe-webserver1
+RUN npx lerna run build --scope @krupnik/app
 
 FROM node:12-alpine
 WORKDIR /usr/src/app
-COPY --from=builder /app/packages/webservers/webserver1/dist .
+COPY --from=builder /app/packages/app/dist .
 RUN npm install --only=production
 
 EXPOSE 9000
