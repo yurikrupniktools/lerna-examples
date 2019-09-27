@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [13.0.0](https://github.com/yurikrupniktools/lerna-examples/compare/@krupnik/app@12.0.0...@krupnik/app@13.0.0) (2019-09-27)
+
+**Note:** Version bump only for package @krupnik/app
+
+
+
+
+
 # [12.0.0](https://github.com/yurikrupniktools/lerna-examples/compare/@krupnik/app@11.0.0...@krupnik/app@12.0.0) (2019-09-27)
 
 **Note:** Version bump only for package @krupnik/app
