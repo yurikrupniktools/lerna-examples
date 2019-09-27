@@ -17,7 +17,8 @@ ENV DESTINATION_HOST=http://gateway1
 
 COPY . ./packages/app
 RUN npm run pi
-RUN npx lerna run build --scope @krupnik/app
+RUN npx lerna run build:client --scope @krupnik/app
+RUN npx lerna run build:server --scope @krupnik/app
 
 FROM node:12-alpine
 WORKDIR /usr/src/app

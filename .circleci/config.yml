@@ -234,9 +234,9 @@ jobs:
       - run:
           name: git whoami
           command: whoami
-      - run:
-          name: lerna changed
-          command: npx lerna changed
+#      - run:
+#          name: lerna changed
+#          command: npx lerna changed
 #      - run:
 #          name: publish to npm
 #          command: npx lerna publish major --yes --no-push --conventional-commits
@@ -299,8 +299,8 @@ workflows:
     jobs:
       - lint_test_build
       - deploy_npm:
-          requires:
-            - lint_test_build
+#          requires:
+#            - lint_test_build
           filters:
             branches:
               only: master
@@ -309,10 +309,10 @@ workflows:
             branches:
               only: master
 
-      - dc-e2e-all:
-          filters:
-            branches:
-              only: master
+#      - dc-e2e-all:
+#          filters:
+#            branches:
+#              only: master
 
 #          requires:
 #            - build
