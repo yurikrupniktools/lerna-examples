@@ -295,12 +295,12 @@ workflows:
   build:
     jobs:
       - lint_test_build
-      - deploy_npm:
+#      - deploy_npm:
 #          requires:
 #            - lint_test_build
-          filters:
-            branches:
-              only: master
+#          filters:
+#            branches:
+#              only: master
       - coverage:
           filters:
             branches:
@@ -318,5 +318,5 @@ workflows:
     jobs:
       - dc-e2e-all:
           <<: *only-deploy-tags-with-v
-      - dc-e2e-all1:
+      - deploy_npm:
           <<: *only-deploy-tags
