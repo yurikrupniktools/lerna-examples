@@ -318,5 +318,5 @@ workflows:
     jobs:
       - dc-e2e-all:
           <<: *only-deploy-tags-with-v
-      - deploy_npm:
+      - lint_test_build:
           <<: *only-deploy-tags
