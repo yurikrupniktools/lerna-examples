@@ -234,9 +234,9 @@ jobs:
       - run:
           name: git whoami
           command: whoami
-#      - run:
-#          name: lerna changed
-#          command: npx lerna changed
+      - run:
+          name: lerna changed
+          command: npx lerna changed
 #      - run:
 #          name: publish to npm
 #          command: npx lerna publish major --yes --no-push --conventional-commits
@@ -245,15 +245,12 @@ jobs:
 #          command: npx lerna exec -- npm install --package-lock-only --ignore-scripts --no-audit
 #      - run:
 #          name: git add
-#          command: git add .
+#          command: git add -u
 #      - run:
 #          name: git commit
-#          command: git commit -m "package-lock.json update"
+#          command: git commit -am "package-lock.json update"
 #      - run:
-#          name: git whoami
-#          command: whoami
-#      - run:
-#          name: tag by npm
+#          name: npm version
 #          command: npm version patch
 #      - save_cache:
 #          key: dependency-cache-{{ checksum "package.json" }}
